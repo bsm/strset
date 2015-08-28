@@ -63,28 +63,36 @@ func (s *Set) Exists(v string) bool {
 	return pos < len(s.items) && s.items[pos] == v
 }
 
-// Intersect destructively removes all items from s unless they also exist in t
-func (s *Set) Intersect(t *Set) {
-	orig := s
+// Intersect creates an intersection between two sets
+func (s *Set) Intersect(t *Set) *Set {
+	ls, lt := len(s.items), len(t.items)
+	if lt < ls {
+		s, t = t, s
+	}
+	res := New(ls)
+
+	var offset int
+	var ok bool
+	for _, v := range s.items {
+		if offset, ok = index(t.items, v, offset); ok {
+			res.Add(v)
+		}
+	}
+	return res
+}
+
+// Union returns a new set which contains the union of all items of s and t
+func (s *Set) Union(t *Set) *Set {
 	ls, lt := len(s.items), len(t.items)
 	if lt < ls {
 		s, t = t, s
 	}
 
-	var offset int
-	var ok bool
+	res := t.Clone()
 	for _, v := range s.items {
-		if offset, ok = index(t.items, v, offset); !ok {
-			orig.Remove(v)
-		}
+		res.Add(v)
 	}
-}
-
-// Union appends all items of t to s if they don't exist yet
-func (s *Set) Union(t *Set) {
-	for _, v := range t.items {
-		s.Add(v)
-	}
+	return res
 }
 
 // Intersects checks if intersectable

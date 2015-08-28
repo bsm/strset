@@ -75,16 +75,18 @@ var _ = Describe("Set", func() {
 
 	It("should intersect sets", func() {
 		oth := Use("b", "c", "d", "x")
-		subject.Intersect(oth)
+		res := subject.Intersect(oth)
 		Expect(oth.Slice()).To(Equal([]string{"b", "c", "d", "x"}))
-		Expect(subject.Slice()).To(Equal([]string{"b", "d"}))
+		Expect(subject.Slice()).To(Equal([]string{"b", "d", "f"}))
+		Expect(res.Slice()).To(Equal([]string{"b", "d"}))
 	})
 
 	It("should union sets", func() {
 		oth := Use("b", "c", "d", "x")
-		subject.Union(oth)
+		res := subject.Union(oth)
 		Expect(oth.Slice()).To(Equal([]string{"b", "c", "d", "x"}))
-		Expect(subject.Slice()).To(Equal([]string{"b", "c", "d", "f", "x"}))
+		Expect(subject.Slice()).To(Equal([]string{"b", "d", "f"}))
+		Expect(res.Slice()).To(Equal([]string{"b", "c", "d", "f", "x"}))
 	})
 
 	It("should marshal/unmarshal JSON", func() {
