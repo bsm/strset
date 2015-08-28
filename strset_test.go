@@ -22,6 +22,11 @@ var _ = Describe("Set", func() {
 		Expect(subject.Len()).To(Equal(3))
 	})
 
+	It("should clear", func() {
+		subject.Clear()
+		Expect(subject.Len()).To(Equal(0))
+	})
+
 	It("should clone", func() {
 		dupe := subject.Clone()
 		Expect(subject.Remove("d")).To(BeTrue())

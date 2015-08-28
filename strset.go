@@ -29,6 +29,9 @@ func (s *Set) Clone() *Set {
 // Len returns the set length
 func (s *Set) Len() int { return len(s.items) }
 
+// Clear empties the set
+func (s *Set) Clear() { s.items = s.items[:0] }
+
 // Add adds an item to the set
 func (s *Set) Add(v string) bool {
 	if pos := sort.SearchStrings(s.items, v); pos < len(s.items) {
