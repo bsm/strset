@@ -22,6 +22,12 @@ var _ = Describe("Set", func() {
 		Expect(subject.Len()).To(Equal(3))
 	})
 
+	It("should clone", func() {
+		dupe := subject.Clone()
+		Expect(subject.Remove("d")).To(BeTrue())
+		Expect(dupe.Slice()).To(Equal([]string{"b", "d", "f"}))
+	})
+
 	It("should add data", func() {
 		Expect(subject.Add("c")).To(BeTrue())
 		Expect(subject.Add("a")).To(BeTrue())
@@ -60,6 +66,20 @@ var _ = Describe("Set", func() {
 		oth.Add("g")
 		oth.Add("d")
 		Expect(subject.Intersects(oth)).To(BeTrue())
+	})
+
+	It("should intersect sets", func() {
+		oth := Use("b", "c", "d", "x")
+		subject.Intersect(oth)
+		Expect(oth.Slice()).To(Equal([]string{"b", "c", "d", "x"}))
+		Expect(subject.Slice()).To(Equal([]string{"b", "d"}))
+	})
+
+	It("should union sets", func() {
+		oth := Use("b", "c", "d", "x")
+		subject.Union(oth)
+		Expect(oth.Slice()).To(Equal([]string{"b", "c", "d", "x"}))
+		Expect(subject.Slice()).To(Equal([]string{"b", "c", "d", "f", "x"}))
 	})
 
 	It("should marshal/unmarshal JSON", func() {

@@ -19,6 +19,13 @@ func Use(vv ...string) *Set {
 	return &Set{items: vv}
 }
 
+// Clone returns a copy of the set
+func (s *Set) Clone() *Set {
+	items := make([]string, len(s.items))
+	copy(items, s.items)
+	return &Set{items}
+}
+
 // Len returns the set length
 func (s *Set) Len() int { return len(s.items) }
 
@@ -51,6 +58,30 @@ func (s *Set) Remove(v string) bool {
 func (s *Set) Exists(v string) bool {
 	pos := sort.SearchStrings(s.items, v)
 	return pos < len(s.items) && s.items[pos] == v
+}
+
+// Intersect destructively removes all items from s unless they also exist in t
+func (s *Set) Intersect(t *Set) {
+	orig := s
+	ls, lt := len(s.items), len(t.items)
+	if lt < ls {
+		s, t = t, s
+	}
+
+	var offset int
+	var ok bool
+	for _, v := range s.items {
+		if offset, ok = index(t.items, v, offset); !ok {
+			orig.Remove(v)
+		}
+	}
+}
+
+// Union appends all items of t to s if they don't exist yet
+func (s *Set) Union(t *Set) {
+	for _, v := range t.items {
+		s.Add(v)
+	}
 }
 
 // Intersects checks if intersectable
