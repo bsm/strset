@@ -22,22 +22,5 @@ import (
   "github.com/bsm/strset"
 )
 
-func main() {
-	// Create a new set
-	set := strset.New(3)
-	set.Add("b")	// true
-	set.Add("a")	// true
-	set.Add("c")	// true
-	set.Add("a")	// false
-
-	fmt.Println(set.Slice())	// ["a", "b", "c"]
-
-	set.Exists("a")	// true
-	set.Exists("d")	// false
-
-	set.Remove("a")			// true
-	set.Remove("d")			// false
-	fmt.Println(set.Slice())	// ["b", "c"]
-
-}
+func main() {{ "ExampleSet" | code }}
 ```
