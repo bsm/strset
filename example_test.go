@@ -16,8 +16,8 @@ func ExampleSet() {
 
 	fmt.Println(set.Slice()) // [a b c]
 
-	set.Exists("a") // true
-	set.Exists("d") // false
+	set.Has("a") // true
+	set.Has("d") // false
 
 	set.Remove("a")          // true
 	set.Remove("d")          // false
